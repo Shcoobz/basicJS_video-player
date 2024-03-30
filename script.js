@@ -9,6 +9,8 @@ const currentTime = document.querySelector('.time-elapsed');
 const duration = document.querySelector('.time-duration');
 const fullscreenBtn = document.querySelector('.fullscreen');
 
+const MUTE = 0;
+
 // Play & Pause ----------------------------------- //
 function showPauseIcon() {
   playBtn.classList.replace('fa-play', 'fa-pause');
@@ -67,6 +69,7 @@ function setProgress(e) {
 }
 
 // Volume Controls --------------------------- //
+let lastVolume = 0.5;
 
 // Volume Bar
 function changeVolume(e) {
@@ -88,13 +91,39 @@ function changeVolume(e) {
   volumeIcon.className = '';
   if (volume > 0.5) {
     volumeIcon.classList.add('fas', 'fa-volume-up');
-  } else if (volume <= 0.5 && volume > 0) {
+  } else if (volume <= 0.5 && volume > MUTE) {
     volumeIcon.classList.add('fas', 'fa-volume-down');
-  } else if (volume === 0) {
+  } else if (volume === MUTE) {
     volumeIcon.classList.add('fas', 'fa-volume-off');
   }
 
-  console.log(volume);
+  lastVolume = volume;
+}
+
+// Mute/Unmute
+function toggleMute() {
+  volumeIcon.className = '';
+
+  if (video.volume) {
+    lastVolume = video.volume;
+    video.volume = MUTE;
+    volumeBar.style.width = MUTE;
+    volumeIcon.classList.add('fas', 'fa-volume-mute');
+    volumeIcon.setAttribute('title', 'Unmute');
+  } else {
+    video.volume = lastVolume;
+    volumeBar.style.width = `${lastVolume * 100}%`;
+
+    if (lastVolume > 0.5) {
+      volumeIcon.classList.add('fas', 'fa-volume-up');
+    } else if (lastVolume <= 0.5 && lastVolume > MUTE) {
+      volumeIcon.classList.add('fas', 'fa-volume-down');
+    } else if (lastVolume === MUTE) {
+      volumeIcon.classList.add('fas', 'fa-volume-off');
+    }
+
+    volumeIcon.setAttribute('title', 'Mute');
+  }
 }
 
 // Change Playback Speed -------------------- //
@@ -108,3 +137,4 @@ video.addEventListener('timeupdate', updateProgress);
 video.addEventListener('canplay', updateProgress);
 progressRange.addEventListener('click', setProgress);
 volumeRange.addEventListener('click', changeVolume);
+volumeIcon.addEventListener('click', toggleMute);
