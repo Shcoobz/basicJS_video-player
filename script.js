@@ -20,6 +20,11 @@ function showPlayIcon() {
   playBtn.setAttribute('title', 'Play');
 }
 
+function showReplayIcon() {
+  playBtn.classList.replace('fa-pause', 'fa-play');
+  playBtn.setAttribute('title', 'Replay');
+}
+
 function togglePlay() {
   if (video.paused) {
     video.play();
@@ -31,21 +36,26 @@ function togglePlay() {
 }
 
 // On Video End, show play button icon
-video.addEventListener('ended', showPlayIcon);
+video.addEventListener('ended', showReplayIcon);
 
 // Progress Bar ---------------------------------- //
+
+// Calculate display time format
+function displayTime(time) {
+  const minutes = Math.floor(time / 60);
+  let seconds = Math.floor(time % 60);
+
+  seconds = seconds > 9 ? seconds : `0${seconds}`;
+
+  return `${minutes}:${seconds}`;
+}
 
 // Update progress bar as video plays
 function updateProgress() {
   progressBar.style.width = `${(video.currentTime / video.duration) * 100}%`;
+  currentTime.textContent = `${displayTime(video.currentTime)} / `;
+  duration.textContent = `${displayTime(video.duration)}`;
 }
-
-// function clearProgress() {
-//   progressBar.style.width = '0%';
-// }
-
-// // On Video End, clear progressBar
-// video.addEventListener('ended', clearProgress);
 
 // Volume Controls --------------------------- //
 
