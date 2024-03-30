@@ -125,7 +125,6 @@ function onVolumeChange(e) {
 
   selectors.video.volume = volume;
   selectors.volumeBar.style.width = `${volume * PERCENT_MAX}%`;
-  // lastVolume = volume;
 
   updateVolumeIcon(volume);
 }
@@ -140,13 +139,10 @@ const onToggleMute = () => {
     selectors.video.volume = lastVolume;
     selectors.volumeBar.style.width = `${lastVolume * PERCENT_MAX}%`;
   } else {
-    lastVolume = selectors.video.volume; // Store current volume before muting
+    lastVolume = selectors.video.volume;
     selectors.video.volume = VOLUME_LEVELS.ZERO;
     selectors.volumeBar.style.width = '0%';
   }
-
-  // selectors.video.volume = isMuted ? lastVolume : VOLUME_LEVELS.ZERO;
-  // selectors.volumeBar.style.width = isMuted ? `${lastVolume * PERCENT_MAX}%` : '0%';
 
   updateVolumeIcon(selectors.video.volume);
 };
