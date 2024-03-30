@@ -13,7 +13,6 @@ const selectors = {
   fullscreenBtn: document.querySelector('.fullscreen'),
 };
 
-// Volume levels and thresholds
 const VOLUME_LEVELS = {
   ZERO: 0,
   LOW: 0.1,
@@ -28,12 +27,22 @@ const PERCENT_MAX = 100;
 let lastVolume = VOLUME_LEVELS.MIDDLE;
 let fullscreen = false;
 
-// Utility functions for common tasks
+/**
+ * Utility function to toggle between play and pause icons.
+ * @param {string} icon - The current icon class (play or pause).
+ * @param {string} action - The action class to switch to (play or pause).
+ * @param {string} title - The title to be set for the button (Play, Pause, or Replay).
+ */
 const toggleIcon = (icon, action, title) => {
   selectors.playBtn.classList.replace(`fa-${icon}`, `fa-${action}`);
   selectors.playBtn.setAttribute('title', title);
 };
 
+/**
+ * Converts time in seconds to a formatted string "MM:SS".
+ * @param {number} time - The time in seconds.
+ * @returns {string} - The formatted time string.
+ */
 function displayTime(time) {
   const minutes = Math.floor(time / SECONDS_PER_MINUTE);
   const seconds = Math.floor(time % SECONDS_PER_MINUTE)
@@ -42,7 +51,9 @@ function displayTime(time) {
   return `${minutes}:${seconds}`;
 }
 
-// Main functionality
+/**
+ * Updates the video playback progress bar and time display.
+ */
 function updateProgress() {
   const progress = (selectors.video.currentTime / selectors.video.duration) * PERCENT_MAX;
 
@@ -51,6 +62,9 @@ function updateProgress() {
   selectors.duration.textContent = displayTime(selectors.video.duration);
 }
 
+/**
+ * Toggles play or pause status of the video and updates the play button icon accordingly.
+ */
 function onPlayToggle() {
   if (selectors.video.paused) {
     selectors.video.play();
@@ -61,10 +75,17 @@ function onPlayToggle() {
   }
 }
 
+/**
+ * Updates the play button to show the replay icon when the video ends.
+ */
 function onVideoEnd() {
   toggleIcon('pause', 'play', 'Replay');
 }
 
+/**
+ * Seeks the video to the position clicked on the progress bar.
+ * @param {MouseEvent} e - The click event on the progress bar.
+ */
 function onProgressClick(e) {
   const newTime =
     (e.offsetX / selectors.progressRange.offsetWidth) * selectors.video.duration;
@@ -74,6 +95,10 @@ function onProgressClick(e) {
   updateProgress();
 }
 
+/**
+ * Updates the volume icon based on the current volume level.
+ * @param {number} volume - The current volume level of the video.
+ */
 function updateVolumeIcon(volume) {
   selectors.volumeIcon.className = ''; // Reset class name
 
@@ -89,6 +114,10 @@ function updateVolumeIcon(volume) {
   }
 }
 
+/**
+ * Handles changes to the video volume via the volume range input.
+ * @param {MouseEvent} e - The event associated with the volume change.
+ */
 function onVolumeChange(e) {
   let volume = e.offsetX / selectors.volumeRange.offsetWidth;
 
@@ -101,6 +130,9 @@ function onVolumeChange(e) {
   updateVolumeIcon(volume);
 }
 
+/**
+ * Toggles the video's mute status and updates the UI accordingly.
+ */
 const onToggleMute = () => {
   const isMuted = selectors.video.volume === VOLUME_LEVELS.ZERO;
 
@@ -110,10 +142,17 @@ const onToggleMute = () => {
   updateVolumeIcon(selectors.video.volume);
 };
 
+/**
+ * Changes the video playback speed based on the selected speed option.
+ */
 function onSpeedChange() {
   selectors.video.playbackRate = selectors.speed.value;
 }
 
+/**
+ * Enters or exits fullscreen mode for the video player.
+ * @param {Element} elem - The element to display in fullscreen mode.
+ */
 function openFullscreen(elem) {
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
@@ -130,6 +169,9 @@ function openFullscreen(elem) {
   selectors.video.classList.add('video-fullscreen');
 }
 
+/**
+ * Exits fullscreen mode.
+ */
 function closeFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -146,6 +188,9 @@ function closeFullscreen() {
   selectors.video.classList.remove('video-fullscreen');
 }
 
+/**
+ * Toggles the fullscreen state of the video player.
+ */
 function onFullscreenToggle() {
   fullscreen = !fullscreen;
 
