@@ -4,7 +4,7 @@
 
 ## Summary
 
-Welcome to Video Player! This application provides a custom, intuitive video player interface for web applications. It features a user-friendly control panel with play/pause, volume adjustment, playback speed control, progress tracking, and fullscreen capabilities.
+Video Player provides a custom, intuitive video player interface for web applications. It features a user-friendly control panel with play/pause, volume adjustment, playback speed control, progress tracking, and fullscreen capabilities.
 
 The core functionality includes:
 
