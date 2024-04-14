@@ -1,6 +1,6 @@
-# Video Player -> [LIVE DEMO](https://shcoobz.github.io/video-player/)
+# basicJS_Video Player: [LIVE DEMO](https://shcoobz.github.io/basicJS_video-player/)
 
-![Project Image](img/video-player.png)
+![Project Image](img/basicJS_video-player.png)
 
 ## Summary
 
